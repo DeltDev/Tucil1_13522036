@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 #include "helper.h"
 
-stack<string> FlipStack (stack<string> StringStack){
+stack<TemplateDataType> FlipStack (stack<TemplateDataType> StackInput){
     stack<string> StackOut;
 
     stack<string> StackIn;
-    StackIn = StringStack;
+    StackIn = StackInput;
 
     while(!StackIn.empty()){
         StackOut.push(StackIn.top());
@@ -32,4 +32,12 @@ string StringStackToString(stack <string> StringStack){
     return StringOut;
 }
 
-void 
+vector<vector <TemplateDataType> > InitiateNewMatrix(int Row, int Col){
+
+}
+void PrintMatrix(int Row, int Col, vector<vector<TemplateDataType> > Matrix){
+
+}
+vector<vector<TemplateDataType> > EmptyMatrix(){
+    
+}
