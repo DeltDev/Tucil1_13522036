@@ -35,5 +35,5 @@ string Token::GetTokenString(){
 }
 
 bool Token::GetTokenValidity(){
-    return isTokenValid;
+    return isValidToken;
 }
