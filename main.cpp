@@ -23,8 +23,16 @@ bool AllSequenceValid; //mengecek apakah semua sequence valid
 // stack<string> Stack1, Stack2;
 int main(){
 
-    cout<<"Masukkan panjang buffer: \n";
-    cin>>bufferSize;
-    cout<<"Masukkan ukuran Matriks (format: banyak kolom <spasi> banyak baris)\n";
-    cin>>MatrixCol>>MatrixRow;
+    Token token1 = Token("1C");
+    Token token2 = Token("JA");
+    vector<Token> v1;
+    v1.push_back(token1);
+    v1.push_back(token2);
+    TokenSequence sequence1 = TokenSequence(v1);
+    string str1;
+    str1 = sequence1.GetSequenceString();
+    bool valid1;
+    valid1 = sequence1.GetSequenceValidity();
+    cout<<str1<<"\n";
+    cout<<valid1<<"\n";
 }

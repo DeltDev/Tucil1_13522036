@@ -16,18 +16,14 @@ bool Token::isTokenValid(string InputString){
     ValidTokenStrings.push_back("BD");
     ValidTokenStrings.push_back("E9");
     ValidTokenStrings.push_back("FF");
-    bool check = true;
+    bool check = false;
     for(int i = 0; i<ValidTokenStrings.size(); i++){
-        if(InputString != ValidTokenStrings[i]){
-            check = false;
+        if(InputString == ValidTokenStrings[i]){
+            check = true;
             break;
         }
     }
-    if(check){
-        return true;
-    } else {
-        return false;
-    }
+    return check;
 }
 
 string Token::GetTokenString(){
