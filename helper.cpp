@@ -39,7 +39,12 @@ vector<vector <TemplateDataType> > CreateNewMatrix(int Row, int Col){
 void PrintMatrix(int Row, int Col, vector<vector<TemplateDataType> > Matrix){
     for (int i = 0; i<Row; i++){
         for(int j = 0; j<Col; j++){
-
+            if(j == Col-1){
+                cout<<Matrix[i][j];
+            } else {
+                cout<<Matrix[i][j]<<" ";
+            }
         }
+        cout<<"\n";
     }
 }
