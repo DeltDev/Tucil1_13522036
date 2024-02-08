@@ -15,7 +15,8 @@ stack<pair<int,int> > CoordinateStack;//stack yang berisi koordinat tempat
 vector<string> SequenceList; //daftar sequence yang ada
 vector<bool> SequenceCheckList; //list yang berfungsi untuk mengecek apakah sequence sudah pernah ada atau belum
 vector<int> pointsList; //daftar poin yang dimiliki setiap sequence
-
+bool isTokenMatrixValid; //mengecek apakah semua token pada matriks valid
+bool AllSequenceValid; //mengecek apakah semua sequence valid
 //debugging
 // string test,out;
 // stack<string> Stack1, Stack2;
