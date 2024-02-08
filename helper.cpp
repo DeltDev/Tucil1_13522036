@@ -32,12 +32,14 @@ string StringStackToString(stack <string> StringStack){
     return StringOut;
 }
 
-vector<vector <TemplateDataType> > InitiateNewMatrix(int Row, int Col){
-
+vector<vector <TemplateDataType> > CreateNewMatrix(int Row, int Col){
+    vector<vector <TemplateDataType> > NewMatrix(Row, vector<TemplateDataType> Col);
+    return NewMatrix;
 }
 void PrintMatrix(int Row, int Col, vector<vector<TemplateDataType> > Matrix){
+    for (int i = 0; i<Row; i++){
+        for(int j = 0; j<Col; j++){
 
-}
-vector<vector<TemplateDataType> > EmptyMatrix(){
-    
+        }
+    }
 }

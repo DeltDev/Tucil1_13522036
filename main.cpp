@@ -12,6 +12,7 @@ int MatrixRow,MatrixCol; //panjang baris dan kolom kedua matriks di atas
 int bufferSize; //panjang buffer
 stack<pair<int,int> > CoordinateStack;//stack yang berisi koordinat tempat
 vector<string> SequenceList; //daftar sequence yang ada
+vector<bool> SequenceCheckList; //list yang berfungsi untuk mengecek apakah sequence sudah pernah ada atau belum
 vector<int> pointsList; //daftar poin yang dimiliki setiap sequence
 
 //debugging
