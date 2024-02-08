@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-//Token adalah object yang berupa string
+//Token adalah object yang berupa string (sel individu pada matrix dan sequence)
 class Token{
     private:
         string TokenString; //string token
