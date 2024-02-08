@@ -54,6 +54,7 @@ int main(){
         cin.ignore();
         getline(cin,TempSequence);
         cin>>tempPoints;
+        
     }
     GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
     gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
