@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 #include "sequence.h"
 
-TokenSequence::TokenSequence(vector<Token> InputSequence){
+TokenSequence::TokenSequence(vector<Token> InputSequence, int points){
     Sequence = InputSequence;
+    sequencePoints = points;
     ValidSequence = true;
 
     for(int i = 0; i<InputSequence.size(); i++){
@@ -34,5 +35,8 @@ string TokenSequence::ConvertSequenceToString(){
     }
 
     return out;
+}
+int TokenSequence::GetSequencePoints(){
+    return sequencePoints;
 }
 

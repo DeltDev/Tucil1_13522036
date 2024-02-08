@@ -9,9 +9,9 @@ class Token{
         string TokenString; //string token
         bool isValidToken; //cek apakah token valid
         //token yang valid adalah token yang memiliki nilai TokenString berupa salah satu dari string berikut: "1C", "55", "7A", "BD", "E9", "FF"
-        bool isTokenValid(string InputString); //periksa apakah token valid
+        bool isTokenValid(string InputString, set<string> ValidTokenStrings); //periksa apakah token valid
     public:
-        Token(string InputString); //konstruktor token
+        Token(string InputString, set<string> ValidTokenStrings); //konstruktor token
         string GetTokenString(); //mengembalikan nilai TokenString
         bool GetTokenValidity(); //mengembalikan nilai isValidToken
 };

@@ -4,19 +4,19 @@
 
 using namespace std;
 
-GameMatrix::GameMatrix(int Row, int Col){
+GameMatrix::GameMatrix(int Row, int Col,set <string> ValidTokenStrings){
     RowSize = Row;
     ColSize = Col;
     isGameMatrixValid = false;
-    InitiateTokenMatrix();
+    InitiateTokenMatrix(ValidTokenStrings);
     InitiateVisitedMatrix();
 }
-void GameMatrix::InitiateTokenMatrix(){
+void GameMatrix::InitiateTokenMatrix(set<string> ValidTokenStrings){
     for(int i = 0; i<RowSize; i++){
         vector<Token> rowInit;
         
         for(int j = 0; j<ColSize; j++){
-            Token TokenInit = Token(".");
+            Token TokenInit = Token(".",ValidTokenStrings);
             rowInit.push_back(TokenInit);
         }
         TokenMatrix.push_back(rowInit);
@@ -93,4 +93,13 @@ void GameMatrix::CheckGameMatrixValidity(){
         }
     }
     return;
+}
+
+void GameMatrix::InputGameMatrix(vector<vector<string> > StringMatrix, set<string> ValidTokenStrings){
+    for(int i = 0; i<RowSize; i++){
+        for(int j = 0; j<ColSize; j++){
+            TokenMatrix[i][j] = Token(StringMatrix[i][j], ValidTokenStrings);
+        }
+    }
+    CheckGameMatrixValidity();
 }
