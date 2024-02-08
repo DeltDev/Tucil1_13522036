@@ -81,3 +81,16 @@ void GameMatrix::PrintVisitedMatrix(){
 bool GameMatrix::GetGameMatrixValidity(){
     return isGameMatrixValid;
 }
+
+void GameMatrix::CheckGameMatrixValidity(){
+    isGameMatrixValid = true;
+    for(int i = 0; i<RowSize; i++){
+        for(int j = 0; j<ColSize; j++){
+            if(!TokenMatrix[i][j].GetTokenValidity()){
+                isGameMatrixValid = false;
+                return;
+            }
+        }
+    }
+    return;
+}

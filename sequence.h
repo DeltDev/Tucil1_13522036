@@ -6,8 +6,9 @@ class TokenSequence{
     private:
         vector<Token> Sequence; //Sequence dalam bentuk list
         bool ValidSequence; //menentukan apakah sequence valid
+        //sequence yang valid adalah sequence yang tidak mengandung token yang tidak valid sama sekali
         string SequenceString; //sequence dalam bentuk string
-        //alasan ada string ini adalah untuk mengurangi kompleksitas waktu dibandingkan dengan membandingkan subarray
+        //alasan ada string ini adalah untuk mengurangi kompleksitas waktu dibandingkan dengan membandingkan array
         string ConvertSequenceToString();//mengubah sequence menjadi string tanpa spasi
     public:
         TokenSequence(vector<Token> InputSequence); //konstruktur TokenSequence

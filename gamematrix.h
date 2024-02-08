@@ -7,15 +7,16 @@ class GameMatrix{
         int ColSize,RowSize;
         vector<vector<Token> > TokenMatrix; //matriks yang hanya berisi token
         vector<vector<bool> > VisitedMatrix; //matriks yang menunjukkan apakah cell sudah dikunjungi atau belum
-        bool isGameMatrixValid;
+        bool isGameMatrixValid; //atribut yang menyatakan apakah semua token pada matriks valid atau tidak.
+        //GameMatrix yang valid adalah GameMatrix yang tidak mengandung token yang tidak valid
         void InitiateTokenMatrix(); //membuat matriks token baru
         void InitiateVisitedMatrix(); //membuat matriks visited baru
-        void CheckGameMatrixValidity(); //BELUM DIIMPLEMENTASI: mengecek apakah GameMatrix valid
+        void CheckGameMatrixValidity(); //mengecek apakah GameMatrix valid
     public:
         GameMatrix(int Row, int Col); //konstruktur GameMatrix
         Token GetTokenCell(int Row, int Col); //mendapatkan token pada baris dan kolom yang dicari
         bool GetVisitedCell(int Row, int Col); //mendapatkan nilai apakah cell sudah dikunjungi atau belum
-        void InputGameMatrix(int Row, int Col); //menginput gameMatrix
+        void InputGameMatrix(int Row, int Col); //BELUM DIIMPLEMENTASI menginput gameMatrix
         void SetVisitedCell(int Row, int Col, bool cellValue); //mengubah nilai cell visited matrix (untuk backtracking)
         int GetRow(); //mendapatkan banyak baris matriks
         int GetCol(); //mendapatkan banyak kolom matriks
