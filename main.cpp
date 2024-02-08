@@ -2,6 +2,7 @@
 // #include "helper.h"
 #include "token.h"
 #include "sequence.h"
+#include "gamematrix.h"
 using namespace std;
 //Atribut untuk menyelesaikan tucil
 string OptimalAnswer; //string jawaban
@@ -23,16 +24,9 @@ bool AllSequenceValid; //mengecek apakah semua sequence valid
 // stack<string> Stack1, Stack2;
 int main(){
 
-    Token token1 = Token("1C");
-    Token token2 = Token("JA");
-    vector<Token> v1;
-    v1.push_back(token1);
-    v1.push_back(token2);
-    TokenSequence sequence1 = TokenSequence(v1);
-    string str1;
-    str1 = sequence1.GetSequenceString();
-    bool valid1;
-    valid1 = sequence1.GetSequenceValidity();
-    cout<<str1<<"\n";
-    cout<<valid1<<"\n";
+    MatrixCol = 7;
+    MatrixRow = 1;
+    GameMatrix Test = GameMatrix(MatrixRow,MatrixCol);
+    Test.PrintTokenMatrix();
+    Test.PrintVisitedMatrix();
 }

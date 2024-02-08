@@ -10,7 +10,7 @@ class GameMatrix{
         bool isGameMatrixValid;
         void InitiateTokenMatrix(); //membuat matriks token baru
         void InitiateVisitedMatrix(); //membuat matriks visited baru
-        void CheckGameMatrixValidity(); //mengecek apakah GameMatrix valid
+        void CheckGameMatrixValidity(); //BELUM DIIMPLEMENTASI: mengecek apakah GameMatrix valid
     public:
         GameMatrix(int Row, int Col); //konstruktur GameMatrix
         Token GetTokenCell(int Row, int Col); //mendapatkan token pada baris dan kolom yang dicari

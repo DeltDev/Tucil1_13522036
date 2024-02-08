@@ -20,6 +20,7 @@ void GameMatrix::InitiateTokenMatrix(){
             rowInit.push_back(TokenInit);
         }
         TokenMatrix.push_back(rowInit);
+        rowInit.clear();
     }
 } 
 void GameMatrix::InitiateVisitedMatrix(){
@@ -29,6 +30,7 @@ void GameMatrix::InitiateVisitedMatrix(){
             rowInit.push_back(false);
         }
         VisitedMatrix.push_back(rowInit);
+        rowInit.clear();
     }
 } 
 Token GameMatrix::GetTokenCell(int Row, int Col){
@@ -70,7 +72,7 @@ void GameMatrix::PrintVisitedMatrix(){
             if(j == ColSize-1){
                 cout<<VisitedMatrix[i][j];
             } else{
-                cout<<VisitedMatrix[i][j] + " ";
+                cout<<VisitedMatrix[i][j]<<" ";
             }
         }
         cout<<"\n";
