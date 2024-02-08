@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-// #include "helper.h"
+#include "helper.h"
 #include "token.h"
 #include "sequence.h"
 #include "gamematrix.h"
@@ -49,12 +49,17 @@ int main(){
     cin>>sequenceSize;
     cout<<"Masukkan sequence dan poinnya (sequence dan poin dipisahkan dengan enter): \n";
     for(int i = 0; i<sequenceSize; i++){
-        string TempSequence;
+        string TempString;
         int tempPoints;
         cin.ignore();
-        getline(cin,TempSequence);
+        getline(cin,TempString);
         cin>>tempPoints;
-        
+        vector<string> StringList;
+        vector<Token> TokenList;
+        StringList = StringToStringList(TempString);
+        TokenList = StringListToTokenList(StringList,validTokens);
+        TokenSequence tokenSequence = TokenSequence(TokenList,tempPoints);
+        SequenceList.push_back(tokenSequence);
     }
     GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
     gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
