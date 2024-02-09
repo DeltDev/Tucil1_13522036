@@ -56,7 +56,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                     }
                 }
                 newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
-                //BELUM DITAMBAHKAN Update jawaban
+                UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
                 SolveOptimal(gameMatrix,"Vertical",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,currentRow,i,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
@@ -66,8 +66,22 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
         //BELUM DIKERJAKAN
     }
 }
-void UpdateAnswer(){
-
+void UpdateFinalAnswer(int currentPoints, int currentBuffer, vector<Token> currentTokenList, vector<pair<int,int> > currentCoordinateList){
+    if(MaxPoints < currentPoints){ //Jika poin akhir saat ini < currentPoints
+        MaxPoints = currentPoints; //Update poin akhir dengan currentPoints
+        MinBuffer = currentBuffer; //Update buffer akhir dengan currentBuffer
+        TokenListFinalAnswer = currentTokenList; //Update Token List akhir dengan currentTokenList
+        CoordinateListFinalAnswer = currentCoordinateList; //Update Coordinate List akhir dengan currentCoordinateList
+    } else if(MaxPoints == currentPoints){ //Jika poin akhir saat ini = currentPoints
+        if(MinBuffer > currentBuffer){ //Jika buffer akhir saat ini > currentBuffer
+        //Update semua atribut akhir sama seperti dengan kondisi jika poin akhir < currentPoints
+            MaxPoints = currentPoints; 
+            MinBuffer = currentBuffer;
+            TokenListFinalAnswer = currentTokenList;
+            CoordinateListFinalAnswer = currentCoordinateList;
+        }
+    }//Jika poin akhir saat ini > currentPoints, jangan update jawaban
+    return;
 }
 int main(){
     cout<<"Masukkan panjang buffer\n";
