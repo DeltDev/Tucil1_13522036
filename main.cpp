@@ -15,7 +15,7 @@ vector<pair<int,int> > CoordinateListFinalAnswer; //daftar koordinat yang dipili
 int MatrixRow,MatrixCol; //panjang baris dan kolom kedua matriks di atas
 int bufferSize; //panjang buffer
 int sequenceSize;//banyak sequence
-vector<pair<int,int> > CoordinateStack;//stack yang berisi koordinat tempat
+vector<pair<int,int> > CoordinateList;//List yang berisi koordinat tempat
 vector<TokenSequence> SequenceList; //daftar sequence yang ada
 vector<bool> SequenceCheckList; //list yang berfungsi untuk mengecek apakah sequence sudah pernah ada atau belum
 
@@ -60,6 +60,12 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 SolveOptimal(gameMatrix,"Vertical",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,currentRow,i,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
+                //1. Hapus string token yang ditunjuk dari string answer (hapus token terakhir yang ditambahkan)
+                newTokenList.pop_back();//2. pop newTokenList dari belakang
+                newCoordinateList.pop_back();//3. Pop CoordinateList dari belakang
+                gameMatrix.SetVisitedCell(currentRow,i,false);//4. Tandai sel[currentRow][i] belum dikunjungi
+                newBufferLeft++;//5. Tambah BufferLeft dengan 1
+                newBufferCount--; //6. Kurangi currentBuffer dengan 1
             }
         }
     } else if(state == "Vertical"){
