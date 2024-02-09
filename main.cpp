@@ -23,7 +23,7 @@ bool AllSequenceValid; //mengecek apakah semua sequence valid
 set<string> validTokens;// himpunan daftar token yang valid
 vector<vector<string> > inputStringMatrix;
 void UpdateFinalAnswer(int currentPoints, int currentBuffer, vector<Token> currentTokenList, vector<pair<int,int> > currentCoordinateList){
-    cout<<"Masuk Update Final Answer"<<"\n";
+    // cout<<"Masuk Update Final Answer"<<"\n";
     if(MaxPoints < currentPoints){ //Jika poin akhir saat ini < currentPoints
         MaxPoints = currentPoints; //Update poin akhir dengan currentPoints
         MinBuffer = currentBuffer; //Update buffer akhir dengan currentBuffer
@@ -46,7 +46,7 @@ void UpdateFinalAnswer(int currentPoints, int currentBuffer, vector<Token> curre
 void SolveOptimal(GameMatrix gameMatrix, string state, string currentAnswer, int BufferLeft, int currentPoints, 
 vector<Token> currentTokenList, vector<pair<int, int> >  currentCoordinateList,int currentRow, int currentCol ,
 int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> currentSequenceList){
-    cout<<"Masuk Solve Optimal"<< "BufferLeft="<<BufferLeft<<"\n";
+    // cout<<"Masuk Solve Optimal"<< "BufferLeft="<<BufferLeft<<"\n";
     if(BufferLeft<=0){ //Basecase: jika BufferLeft<=0, jangan jalankan prosedur ini karena buffer sudah penuh.
         return;
     }
@@ -62,7 +62,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
     vector<bool> newSequenceCheckList = currentSequenceCheckList;
     pair<int,int> currentCoordinate;
     if(state == "Horizontal"){
-        cout<<"Masuk State Horizontal"<<"\n";
+        // cout<<"Masuk State Horizontal"<<"\n";
         for(int i = 0; i<MatrixCol; i++){
             if(!gameMatrix.GetVisitedCell(currentRow,i)){//Jika token di sel[currentRow][i] belum dikunjungi
                 newAnswer = newAnswer + gameMatrix.GetTokenCell(currentRow,i).GetTokenString(); //Tambahkan string token yang ditunjuk ke string answer
@@ -84,6 +84,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 }
                 newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
+                cout<<newAnswer<<" "<<MaxPoints<<"\n";
                 SolveOptimal(gameMatrix,"Vertical",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,currentRow,i,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
@@ -93,11 +94,12 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 gameMatrix.SetVisitedCell(currentRow,i,false);//4. Tandai sel[currentRow][i] belum dikunjungi
                 newBufferLeft++;//5. Tambah BufferLeft dengan 1
                 newBufferCount--; //6. Kurangi currentBuffer dengan 1
+                //7. Backtrack poin
                 
             }
         }
     } else if(state == "Vertical"){
-        cout<<"Masuk State Vertical"<<"\n";
+        // cout<<"Masuk State Vertical"<<"\n";
         for(int i = 0; i<MatrixRow; i++){
             if(!gameMatrix.GetVisitedCell(i,currentCol)){//Jika token di sel[currentRow][i] belum dikunjungi
                 newAnswer = newAnswer + gameMatrix.GetTokenCell(i,currentCol).GetTokenString(); //Tambahkan string token yang ditunjuk ke string answer
@@ -119,6 +121,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 }
                 newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
+                cout<<newAnswer<<" "<<MaxPoints<<"\n";
                 SolveOptimal(gameMatrix,"Horizontal",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,i,currentCol,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
@@ -128,6 +131,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 gameMatrix.SetVisitedCell(i,currentCol,false);//4. Tandai sel[currentRow][i] belum dikunjungi
                 newBufferLeft++;//5. Tambah BufferLeft dengan 1
                 newBufferCount--; //6. Kurangi currentBuffer dengan 1
+                //7. Backtrack poin
             }
         }
     }
@@ -187,6 +191,5 @@ int main(){
         cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<" ";
     }
     cout<<"\n";
-    return 0;
     return 0;
 }
