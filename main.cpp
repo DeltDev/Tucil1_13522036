@@ -58,7 +58,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
     int newBufferLeft,newPoints,newBufferCount,PointAddition;
     newBufferLeft = BufferLeft;
     newBufferCount = currentBuffer;
-    PointAddition = 0;
+    
     vector<bool> newSequenceCheckList = currentSequenceCheckList;
     pair<int,int> currentCoordinate;
     if(state == "Horizontal"){
@@ -73,18 +73,25 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 
                 newBufferLeft--; //Kurangi BufferLeft dengan 1
                 newBufferCount++; //Tambahkan currentBuffer dengan 1
-                
+                cout<<"Jawaban Sementara: "<<newAnswer<<"\n";
+                cout<<"Daftar Sequence dan check listnya: ";
+                PointAddition = 0;
                 for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
+                    
                     if(!newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
                         if(newAnswer.find(currentSequenceList[i].GetSequenceString()) != string::npos){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
                             PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
                             newSequenceCheckList[i] = true; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
                         }
                     }
+                    cout<<currentSequenceList[i].GetSequenceString()<<" "<<newSequenceCheckList[i]<<" ";
                 }
+                cout<<"\n";
                 newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
+                cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
+                cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
-                cout<<newAnswer<<" "<<MaxPoints<<"\n";
+                
                 SolveOptimal(gameMatrix,"Vertical",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,currentRow,i,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
@@ -110,18 +117,25 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 
                 newBufferLeft--; //Kurangi BufferLeft dengan 1
                 newBufferCount++; //Tambahkan currentBuffer dengan 1
-                
+                cout<<"Jawaban Sementara: "<<newAnswer<<"\n";
+                cout<<"Daftar Sequence dan check listnya: ";
+                PointAddition = 0;
                 for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
+                    
                     if(!newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
                         if(newAnswer.find(currentSequenceList[i].GetSequenceString()) != string::npos){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
                             PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
                             newSequenceCheckList[i] = true; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
                         }
                     }
+                    cout<<currentSequenceList[i].GetSequenceString()<<" "<<newSequenceCheckList[i]<<" ";
                 }
+                cout<<"\n";
                 newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
+                cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
+                cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
-                cout<<newAnswer<<" "<<MaxPoints<<"\n";
+                
                 SolveOptimal(gameMatrix,"Horizontal",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,i,currentCol,newBufferCount,newSequenceCheckList,currentSequenceList);
                 //Panggil fungsi ini lagi secara rekursif dengan parameter yang sudah diupdate di atas ditambah dengan nilai currentCol = i, nilai currentRow sama, dan state = “Vertical”
                 //BELUM DIKERJAKAN Batalkan semua perubahan parameter untuk iterasi berikutnya
@@ -179,7 +193,7 @@ int main(){
     gameMatrix.PrintTokenMatrix();
     gameMatrix.PrintVisitedMatrix();
 
-    SolveOptimal(gameMatrix,"Horizontal",OptimalFinalAnswer,bufferSize,MaxPoints,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,MinBuffer,SequenceCheckList,SequenceList);
+    SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceCheckList,SequenceList);
     cout<<"Max points: "<<MaxPoints<<"\n";
     cout<<"Final Answer: ";
     for(int i = 0; i<TokenListFinalAnswer.size(); i++){
