@@ -139,6 +139,56 @@ int currentBuffer, vector<TokenSequence> currentSequenceList){
     }
 }
 
+void OutputFile(GameMatrix gameMatrix,bool method){
+    ofstream OutputFile;
+    OutputFile.open("BruteForceSolution.txt");
+    if(method){ //jika metode yang dipilih adalah metode generation acak
+        for(int i = 0; i<MatrixRow; i++){ //outputkan matriks ke file
+            string RowOut = "";
+            for(int j = 0; j<MatrixCol; j++){
+                RowOut = RowOut + gameMatrix.GetTokenCell(i,j).GetTokenString();
+                if(j != MatrixCol-1){
+                    RowOut = RowOut + " ";
+                }
+            }
+            OutputFile<<RowOut;
+            OutputFile<<"\n";
+        }
+        OutputFile<<"\n";
+
+        for(int i = 0; i<sequenceSize; i++){ //output semua sequence beserta poinnya
+            string sequenceOut = "";
+            for(int j = 0; j<SequenceList[i].GetSequence().size(); j++){
+                sequenceOut = sequenceOut + SequenceList[i].GetSequence()[j].GetTokenString();
+                if(j != SequenceList[i].GetSequence().size()-1){
+                    sequenceOut = sequenceOut + " ";
+                }
+            }
+            OutputFile<<sequenceOut;
+            OutputFile<<"\n";
+            OutputFile<<to_string(SequenceList[i].GetSequencePoints());
+            OutputFile<<"\n";
+        }
+    }
+    OutputFile<<"\n";
+    OutputFile<<to_string(MaxPoints);
+    OutputFile<<"\n";
+    string SequenceFinalAnswer = "";
+    for(int i = 0; i<TokenListFinalAnswer.size(); i++){
+        SequenceFinalAnswer = SequenceFinalAnswer + TokenListFinalAnswer[i].GetTokenString();
+        if(i != TokenListFinalAnswer.size()-1){
+            SequenceFinalAnswer = SequenceFinalAnswer + " ";
+        }
+    }
+    OutputFile<<SequenceFinalAnswer;
+    OutputFile<<"\n";
+    for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
+        string CoordinateOut = to_string(CoordinateListFinalAnswer[i].first) + "," + to_string(CoordinateListFinalAnswer[i].second);
+        OutputFile<<CoordinateOut;
+        OutputFile<<"\n";
+    }
+    OutputFile.close();
+}
 int main(){
     int validTokensAmount;
     cout<<"Masukkan banyak token yang valid: ";
@@ -209,5 +259,12 @@ int main(){
         cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
     }
     cout<<"\n";
+    cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab HANYA dengan y untuk ya ATAU selain y untuk tidak) ";
+
+    string answer;
+    cin>>answer;
+    if(answer == "y"){
+        OutputFile(gameMatrix,1);
+    }
     return 0;
 }
