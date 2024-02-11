@@ -4,6 +4,8 @@
 #include "sequence.h"
 #include "gamematrix.h"
 using namespace std;
+typedef chrono::milliseconds MSEC;
+typedef chrono::high_resolution_clock HRC;
 //Atribut untuk menyelesaikan tucil
 //Atribut jawaban akhir
 bool method; //metode input
@@ -20,7 +22,6 @@ vector<pair<int,int> > CoordinateList;//List yang berisi koordinat tempat
 vector<TokenSequence> SequenceList; //daftar sequence yang ada
 vector<bool> SequenceCheckList; //list yang berfungsi untuk mengecek apakah sequence sudah pernah ada atau belum
 
-bool AllSequenceValid; //mengecek apakah semua sequence valid
 set<string> validTokens;// himpunan daftar token yang valid
 vector<vector<string> > inputStringMatrix;
 void UpdateFinalAnswer(int currentPoints, int currentBuffer, vector<Token> currentTokenList, vector<pair<int,int> > currentCoordinateList){
@@ -140,9 +141,19 @@ int currentBuffer, vector<TokenSequence> currentSequenceList){
     }
 }
 
-void OutputFile(GameMatrix gameMatrix,bool method){
+void OutputFile(GameMatrix gameMatrix,bool method,auto exec_time){
     ofstream OutputFile;
-    OutputFile.open("BruteForceSolution.txt");
+    string OutputFileName = ""; //dummy
+    cout<<"Masukkan nama file anda (WAJIB DIAKHIRI DENGAN '.txt'): "<<"\n";
+    while(true){
+        cin>>OutputFileName;
+        if(isSubstring(OutputFileName,".txt") != -1){
+            break;
+        } else {
+            cout<<"Format nama salah! Silahkan input nama file output lagi.\n";
+        }
+    }
+    OutputFile.open(OutputFileName);
     if(method){ //jika metode yang dipilih adalah metode generation acak
         for(int i = 0; i<MatrixRow; i++){ //outputkan matriks ke file
             string RowOut = "";
@@ -170,8 +181,9 @@ void OutputFile(GameMatrix gameMatrix,bool method){
             OutputFile<<to_string(SequenceList[i].GetSequencePoints());
             OutputFile<<"\n";
         }
+        OutputFile<<"\n";
     }
-    OutputFile<<"\n";
+    
     OutputFile<<to_string(MaxPoints);
     OutputFile<<"\n";
     string SequenceFinalAnswer = "";
@@ -188,11 +200,37 @@ void OutputFile(GameMatrix gameMatrix,bool method){
         OutputFile<<CoordinateOut;
         OutputFile<<"\n";
     }
+    OutputFile<<exec_time.count();
+    OutputFile<<" ms";
     OutputFile.close();
 }
 
+void OutputAnswer(auto exec_time){
+    cout<<"Max points: "<<MaxPoints<<"\n";
+    cout<<"Final Answer: ";
+    for(int i = 0; i<TokenListFinalAnswer.size(); i++){
+        cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
+    }
+    cout<<"\n";
+    cout<<"Final Coordinates: \n";
+    for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
+        cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
+    }
+    cout<<"\n";
+    cout<<exec_time.count()<<" ms\n";
+}
 
+void OutputFilePrompt(GameMatrix gameMatrix, bool choice,auto exec_time){
+    cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' atau 'Y' untuk YA atau ketik selain y untuk tidak) ";
+
+        string answer;
+        cin>>answer;
+        if(answer == "y" || answer == "Y"){
+            OutputFile(gameMatrix,choice,exec_time);
+        }
+}
 int main(){
+    
     cout<<"Masukkan metode input Breach Protocol yang diinginkan dengan mengetik:\n 0: input file \n 1: Random Matrix and Sequence generation\n";
     cin>>method;
     if(method){
@@ -224,14 +262,14 @@ int main(){
                 gameMatrix.SetTokenCell(i,j,ValidTokensList[ChosenToken]);
             }
         }
-        gameMatrix.PrintTokenMatrix();
+        
         cout<<"Masukkan banyak sequence: ";
         cin>>sequenceSize;
         int MaxSequenceLength;
         cout<<"Masukkan panjang sequence maksimum: ";
         cin>>MaxSequenceLength;
    
-   
+        gameMatrix.PrintTokenMatrix();
         for(int i = 0; i<sequenceSize; i++){
             int SequenceLength = (rand() % MaxSequenceLength) +1;
             int ChosenPoints = (rand() % 101);
@@ -252,37 +290,28 @@ int main(){
             }
             cout<<"Poin = "<<SequenceList[i].GetSequencePoints()<<"\n";
         }
+        auto start = HRC::now();
         SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
-
-        cout<<"Max points: "<<MaxPoints<<"\n";
-        cout<<"Final Answer: ";
-        for(int i = 0; i<TokenListFinalAnswer.size(); i++){
-            cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
-        }
-        cout<<"\n";
-        cout<<"Final Coordinates: \n";
-        for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
-            cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
-        }
-        cout<<"\n";
-        cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' atau 'Y' untuk YA atau ketik selain y untuk tidak) ";
-
-        string answer;
-        cin>>answer;
-        if(answer == "y" || answer == "Y"){
-            OutputFile(gameMatrix,method);
-        }
+        auto end = HRC::now();
+        OutputAnswer(chrono::duration_cast<MSEC>(end-start));
+        OutputFilePrompt(gameMatrix,method,chrono::duration_cast<MSEC>(end-start));
     } else {
         ifstream InputFile;
-        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt'): ";
+        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan ADA di dalam repository): ";
         string FileName;
         cin>>FileName;
         InputFile.open(FileName);
 
-        if(!InputFile.is_open()){
-            cout<<"File tidak ditemukan! Program akan berhenti. \n";
-            return 0;
+        while(!InputFile.is_open()){
+            cout<<"File tidak ditemukan! Silahkan input ulang.\n";
+            cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan ADA di dalam repository): ";
+            cin>>FileName;
+            InputFile.open(FileName);
         }
+        // if(!InputFile.is_open()){
+        //     cout<<"File tidak ditemukan! Program akan berhenti. \n";
+        //     return 0;
+        // }
         int linecount = 0;
         string RowFile;
         vector<string> RowFileStripped;
@@ -330,18 +359,11 @@ int main(){
         GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
         gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
 
+        auto start = HRC::now();
         SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
-        cout<<"Max points: "<<MaxPoints<<"\n";
-        cout<<"Final Answer: ";
-        for(int i = 0; i<TokenListFinalAnswer.size(); i++){
-            cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
-        }
-        cout<<"\n";
-        cout<<"Final Coordinates: \n";
-        for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
-            cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
-        }
-        cout<<"\n";
+        auto end = HRC::now();
+        OutputAnswer(chrono::duration_cast<MSEC>(end-start));
+        OutputFilePrompt(gameMatrix,method,chrono::duration_cast<MSEC>(end-start));
     }
     return 0;
 }
