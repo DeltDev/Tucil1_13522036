@@ -190,6 +190,11 @@ void OutputFile(GameMatrix gameMatrix,bool method){
     }
     OutputFile.close();
 }
+
+void InputFile(){
+    string FileName;
+    
+}
 int main(){
     cout<<"Masukkan metode input Breach Protocol yang diinginkan dengan mengetik:\n 0: input file \n 1: Random Matrix and Sequence generation\n";
     cin>>method;
@@ -270,6 +275,8 @@ int main(){
         if(answer == "y"){
             OutputFile(gameMatrix,method);
         }
+    } else {
+        
     }
     return 0;
 }
