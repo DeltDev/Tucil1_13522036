@@ -6,6 +6,7 @@
 using namespace std;
 //Atribut untuk menyelesaikan tucil
 //Atribut jawaban akhir
+bool method; //metode input
 string OptimalFinalAnswer; //string jawaban
 int MaxPoints; //jawaban poin maksimal
 int MinBuffer; //jawaban buffer minimal
@@ -190,81 +191,85 @@ void OutputFile(GameMatrix gameMatrix,bool method){
     OutputFile.close();
 }
 int main(){
-    int validTokensAmount;
-    cout<<"Masukkan banyak token yang valid: ";
-    cin>>validTokensAmount;
-    cout<<"Masukan daftar token yang valid: ";
-    string ValidTokensListString;
-    cin.ignore();
-    getline(cin,ValidTokensListString); 
-    vector<string> TokensStringList;
-    TokensStringList = StringToStringList(ValidTokensListString);
+    cout<<"Masukkan metode input Breach Protocol yang diinginkan dengan mengetik:\n 0: input file \n 1: Random Matrix and Sequence generation\n";
+    cin>>method;
+    if(method){
+        int validTokensAmount;
+        cout<<"Masukkan banyak token yang valid: ";
+        cin>>validTokensAmount;
+        cout<<"Masukan daftar token yang valid: ";
+        string ValidTokensListString;
+        cin.ignore();
+        getline(cin,ValidTokensListString); 
+        vector<string> TokensStringList;
+        TokensStringList = StringToStringList(ValidTokensListString);
 
-    for(int i = 0; i<validTokensAmount; i++){
-        validTokens.insert(TokensStringList[i]);
-    }
-
-    vector<Token> ValidTokensList;
-    ValidTokensList = StringListToTokenList(TokensStringList,validTokens);
-    cout<<"Masukkan ukuran buffer: ";
-    cin>>bufferSize;
-    cout<<"Masukkan banyak baris dan kolom matriks: ";
-    cin>>MatrixRow>>MatrixCol; 
-    srand(time(NULL));
-    GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
-    for(int i = 0; i<MatrixRow; i++){
-        for(int j = 0; j<MatrixCol; j++){
-            int ChosenToken = (rand() % validTokensAmount);
-            gameMatrix.SetTokenCell(i,j,ValidTokensList[ChosenToken]);
+        for(int i = 0; i<validTokensAmount; i++){
+            validTokens.insert(TokensStringList[i]);
         }
-    }
-    gameMatrix.PrintTokenMatrix();
-    cout<<"Masukkan banyak sequence: ";
-    cin>>sequenceSize;
-    int MaxSequenceLength;
-    cout<<"Masukkan panjang sequence maksimum: ";
-    cin>>MaxSequenceLength;
+
+        vector<Token> ValidTokensList;
+        ValidTokensList = StringListToTokenList(TokensStringList,validTokens);
+        cout<<"Masukkan ukuran buffer: ";
+        cin>>bufferSize;
+        cout<<"Masukkan banyak baris dan kolom matriks: ";
+        cin>>MatrixRow>>MatrixCol; 
+        srand(time(NULL));
+        GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
+        for(int i = 0; i<MatrixRow; i++){
+            for(int j = 0; j<MatrixCol; j++){
+                int ChosenToken = (rand() % validTokensAmount);
+                gameMatrix.SetTokenCell(i,j,ValidTokensList[ChosenToken]);
+            }
+        }
+        gameMatrix.PrintTokenMatrix();
+        cout<<"Masukkan banyak sequence: ";
+        cin>>sequenceSize;
+        int MaxSequenceLength;
+        cout<<"Masukkan panjang sequence maksimum: ";
+        cin>>MaxSequenceLength;
    
    
-    for(int i = 0; i<sequenceSize; i++){
-        int SequenceLength = (rand() % MaxSequenceLength) +1;
-        int ChosenPoints = (rand() % 101);
-        vector<Token> GeneratedSequence;
-        for(int i = 0; i<SequenceLength; i++){
-            int ChosenToken = (rand() % validTokensAmount);
-            GeneratedSequence.push_back(ValidTokensList[ChosenToken]);
-        }
+        for(int i = 0; i<sequenceSize; i++){
+            int SequenceLength = (rand() % MaxSequenceLength) +1;
+            int ChosenPoints = (rand() % 101);
+            vector<Token> GeneratedSequence;
+            for(int i = 0; i<SequenceLength; i++){
+                int ChosenToken = (rand() % validTokensAmount);
+                GeneratedSequence.push_back(ValidTokensList[ChosenToken]);
+            }
         
-        TokenSequence newSequence = TokenSequence(GeneratedSequence,ChosenPoints);
-        SequenceList.push_back(newSequence);
-        GeneratedSequence.clear();
-    }
-
-    for(int i = 0; i<sequenceSize; i++){
-        for(int j = 0; j<SequenceList[i].GetSequence().size(); j++){
-            cout<<SequenceList[i].GetSequence()[j].GetTokenString()<<" ";
+            TokenSequence newSequence = TokenSequence(GeneratedSequence,ChosenPoints);
+            SequenceList.push_back(newSequence);
+            GeneratedSequence.clear();
         }
-        cout<<"Poin = "<<SequenceList[i].GetSequencePoints()<<"\n";
-    }
-    SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
 
-    cout<<"Max points: "<<MaxPoints<<"\n";
-    cout<<"Final Answer: ";
-    for(int i = 0; i<TokenListFinalAnswer.size(); i++){
-        cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
-    }
-    cout<<"\n";
-    cout<<"Final Coordinates: \n";
-    for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
-        cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
-    }
-    cout<<"\n";
-    cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab HANYA dengan y untuk ya ATAU selain y untuk tidak) ";
+        for(int i = 0; i<sequenceSize; i++){
+            for(int j = 0; j<SequenceList[i].GetSequence().size(); j++){
+                cout<<SequenceList[i].GetSequence()[j].GetTokenString()<<" ";
+            }
+            cout<<"Poin = "<<SequenceList[i].GetSequencePoints()<<"\n";
+        }
+        SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
 
-    string answer;
-    cin>>answer;
-    if(answer == "y"){
-        OutputFile(gameMatrix,1);
+        cout<<"Max points: "<<MaxPoints<<"\n";
+        cout<<"Final Answer: ";
+        for(int i = 0; i<TokenListFinalAnswer.size(); i++){
+            cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
+        }
+        cout<<"\n";
+        cout<<"Final Coordinates: \n";
+        for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
+            cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
+        }
+        cout<<"\n";
+        cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' untuk YA atau ketik selain y untuk tidak) ";
+
+        string answer;
+        cin>>answer;
+        if(answer == "y"){
+            OutputFile(gameMatrix,method);
+        }
     }
     return 0;
 }
