@@ -23,5 +23,5 @@ class GameMatrix{
         void PrintTokenMatrix(); //mencetak matriks token
         void PrintVisitedMatrix(); //mencetak matriks visited
         bool GetGameMatrixValidity(); //mendapatkan nilai isGameMatrixValid
-        void GenerateMatrix(set<string> ValidTokenStrings); //BELUM DIIMPLEMENTASI: mengenerate matriks game
+        void SetTokenCell(int Row, int Col, Token value);
 };

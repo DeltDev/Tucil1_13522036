@@ -45,6 +45,10 @@ void GameMatrix::SetVisitedCell(int Row, int Col, bool cellValue){
     return;
 }
 
+void GameMatrix::SetTokenCell(int Row, int Col, Token value){
+    TokenMatrix[Row][Col] = value;
+    return;
+}
 int GameMatrix::GetCol(){
     return ColSize;
 }

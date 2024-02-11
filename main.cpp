@@ -50,7 +50,6 @@ int currentBuffer, vector<TokenSequence> currentSequenceList){
     if(BufferLeft<=0){ //Basecase: jika BufferLeft<=0, jangan jalankan prosedur ini karena buffer sudah penuh.
         return;
     }
-    ofstream out("outputtext.txt");
     string newAnswer;
     newAnswer = currentAnswer;
     vector<Token> newTokenList;
@@ -141,49 +140,64 @@ int currentBuffer, vector<TokenSequence> currentSequenceList){
 }
 
 int main(){
-    MinBuffer = 999999999;
-    MaxPoints = 0;
-    cout<<"Masukkan panjang buffer\n";
-    cin>>bufferSize;
-    cout<<"Masukkan ukuran matriks (format: banyak kolom <spasi> banyak baris):"<<"\n";
-    cin>>MatrixCol>>MatrixRow;
-    cout<<"Masukkan matriks token:\n";
+    int validTokensAmount;
+    cout<<"Masukkan banyak token yang valid: ";
+    cin>>validTokensAmount;
+    cout<<"Masukan daftar token yang valid: ";
+    string ValidTokensListString;
+    cin.ignore();
+    getline(cin,ValidTokensListString); 
+    vector<string> TokensStringList;
+    TokensStringList = StringToStringList(ValidTokensListString);
 
-    for(int i = 0; i<MatrixRow;i++){//inisialisasi inputStringMatrix
-        vector<string> TempStringList;
-        for(int j = 0; j<MatrixCol; j++){
-            TempStringList.push_back(".");
-        }
-        inputStringMatrix.push_back(TempStringList);
+    for(int i = 0; i<validTokensAmount; i++){
+        validTokens.insert(TokensStringList[i]);
     }
+
+    vector<Token> ValidTokensList;
+    ValidTokensList = StringListToTokenList(TokensStringList,validTokens);
+    cout<<"Masukkan ukuran buffer: ";
+    cin>>bufferSize;
+    cout<<"Masukkan banyak baris dan kolom matriks: ";
+    cin>>MatrixRow>>MatrixCol; 
+    srand(time(NULL));
+    GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
     for(int i = 0; i<MatrixRow; i++){
         for(int j = 0; j<MatrixCol; j++){
-            cin>>inputStringMatrix[i][j];
-            validTokens.insert(inputStringMatrix[i][j]);
+            int ChosenToken = (rand() % validTokensAmount);
+            gameMatrix.SetTokenCell(i,j,ValidTokensList[ChosenToken]);
         }
     }
-    cout<<"Masukkan banyak sequence: \n";
-    cin>>sequenceSize;
-    cout<<"Masukkan sequence dan poinnya (sequence dan poin dipisahkan dengan enter): \n";
-    for(int i = 0; i<sequenceSize; i++){
-        string TempString;
-        int tempPoints;
-        cin.ignore();
-        getline(cin,TempString);
-        cin>>tempPoints;
-        vector<string> StringList;
-        vector<Token> TokenList;
-        StringList = StringToStringList(TempString);
-        TokenList = StringListToTokenList(StringList,validTokens);
-        TokenSequence tokenSequence = TokenSequence(TokenList,tempPoints);
-        SequenceList.push_back(tokenSequence);
-    }
-    GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
-    gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
     gameMatrix.PrintTokenMatrix();
-    gameMatrix.PrintVisitedMatrix();
+    cout<<"Masukkan banyak sequence: ";
+    cin>>sequenceSize;
+    int MaxSequenceLength;
+    cout<<"Masukkan panjang sequence maksimum: ";
+    cin>>MaxSequenceLength;
+   
+   
+    for(int i = 0; i<sequenceSize; i++){
+        int SequenceLength = (rand() % MaxSequenceLength) +1;
+        int ChosenPoints = (rand() % 101);
+        vector<Token> GeneratedSequence;
+        for(int i = 0; i<SequenceLength; i++){
+            int ChosenToken = (rand() % validTokensAmount);
+            GeneratedSequence.push_back(ValidTokensList[ChosenToken]);
+        }
+        
+        TokenSequence newSequence = TokenSequence(GeneratedSequence,ChosenPoints);
+        SequenceList.push_back(newSequence);
+        GeneratedSequence.clear();
+    }
 
+    for(int i = 0; i<sequenceSize; i++){
+        for(int j = 0; j<SequenceList[i].GetSequence().size(); j++){
+            cout<<SequenceList[i].GetSequence()[j].GetTokenString()<<" ";
+        }
+        cout<<"Poin = "<<SequenceList[i].GetSequencePoints()<<"\n";
+    }
     SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
+
     cout<<"Max points: "<<MaxPoints<<"\n";
     cout<<"Final Answer: ";
     for(int i = 0; i<TokenListFinalAnswer.size(); i++){
@@ -192,7 +206,7 @@ int main(){
     cout<<"\n";
     cout<<"Final Coordinates: \n";
     for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
-        cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<" ";
+        cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
     }
     cout<<"\n";
     return 0;

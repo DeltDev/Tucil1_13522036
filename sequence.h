@@ -17,5 +17,4 @@ class TokenSequence{
         bool GetSequenceValidity(); //mendapatkan atribut ValidSequence
         string GetSequenceString(); //mendapatkan atribut SequenceString
         int GetSequencePoints(); //mendapatkan nilai sequencePoints
-        void GenerateSequence(); //BELUM DIIMPLEMENTASI mengenerate sequence secara random
 };
