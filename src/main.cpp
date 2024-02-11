@@ -191,10 +191,7 @@ void OutputFile(GameMatrix gameMatrix,bool method){
     OutputFile.close();
 }
 
-void InputFile(){
-    string FileName;
-    
-}
+
 int main(){
     cout<<"Masukkan metode input Breach Protocol yang diinginkan dengan mengetik:\n 0: input file \n 1: Random Matrix and Sequence generation\n";
     cin>>method;
@@ -268,15 +265,83 @@ int main(){
             cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
         }
         cout<<"\n";
-        cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' untuk YA atau ketik selain y untuk tidak) ";
+        cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' atau 'Y' untuk YA atau ketik selain y untuk tidak) ";
 
         string answer;
         cin>>answer;
-        if(answer == "y"){
+        if(answer == "y" || answer == "Y"){
             OutputFile(gameMatrix,method);
         }
     } else {
-        
+        ifstream InputFile;
+        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt'): ";
+        string FileName;
+        cin>>FileName;
+        InputFile.open(FileName);
+
+        if(!InputFile.is_open()){
+            cout<<"File tidak ditemukan! Program akan berhenti. \n";
+            return 0;
+        }
+        int linecount = 0;
+        string RowFile;
+        vector<string> RowFileStripped;
+        while(!InputFile.eof()){
+            linecount++;
+            getline(InputFile,RowFile);
+
+            RowFileStripped = StringToStringList(RowFile);
+
+            if(linecount<=2){
+                if(linecount == 1){
+                    bufferSize = stoi(RowFileStripped[0]);
+                }else{
+                    MatrixCol = stoi(RowFileStripped[0]);
+                    MatrixRow =stoi(RowFileStripped[1]);
+                }
+            } else if(linecount>2 && linecount<=MatrixRow+2){
+                
+                inputStringMatrix.push_back(RowFileStripped);
+                for(int i = 0; i<MatrixCol; i++){
+                    validTokens.insert(RowFileStripped[i]);
+                }
+            } else if(linecount == MatrixRow+3){
+                sequenceSize = stoi(RowFileStripped[0]);
+            } else{
+                if(InputFile.eof()){
+                    break;
+                }
+                for(int i = 0; i<RowFileStripped.size(); i++){
+                    validTokens.insert(RowFileStripped[i]);
+                }
+                vector<Token> TokenSeqTemp;
+                TokenSeqTemp = StringListToTokenList(RowFileStripped,validTokens);
+
+                linecount++;
+                getline(InputFile,RowFile);
+
+                RowFileStripped = StringToStringList(RowFile);
+                int tempPoints = stoi(RowFileStripped[0]);
+
+                TokenSequence TempSequence = TokenSequence(TokenSeqTemp,tempPoints);
+                SequenceList.push_back(TempSequence);
+            }
+        }
+        GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
+        gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
+
+        SolveOptimal(gameMatrix,"Horizontal","",bufferSize,0,TokenListFinalAnswer,CoordinateListFinalAnswer,0,0,0,SequenceList);
+        cout<<"Max points: "<<MaxPoints<<"\n";
+        cout<<"Final Answer: ";
+        for(int i = 0; i<TokenListFinalAnswer.size(); i++){
+            cout<<TokenListFinalAnswer[i].GetTokenString()<<" ";
+        }
+        cout<<"\n";
+        cout<<"Final Coordinates: \n";
+        for(int i = 0; i<CoordinateListFinalAnswer.size(); i++){
+            cout<<CoordinateListFinalAnswer[i].first<<","<<CoordinateListFinalAnswer[i].second<<"\n";
+        }
+        cout<<"\n";
     }
     return 0;
 }

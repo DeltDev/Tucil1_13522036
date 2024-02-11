@@ -13,7 +13,11 @@ vector<string> StringToStringList(string inputString){
         if(i == 0){
             if(inputString[i] != ' '){
                 tempString = tempString + inputString[i];
+                if(inputString.length() == 1){
+                    StringList.push_back(tempString);
+                }
             }
+            
         } else {
             if(i == inputString.length()-1){
                 if(inputString[i] != ' '){
