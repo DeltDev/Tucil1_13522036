@@ -5,4 +5,4 @@ vector<string> StringToStringList(string inputString); //untuk melakukan strippi
 vector<Token> StringListToTokenList(vector<string> StringList, set<string> ValidTokens);
 //debugger
 void PrintTokenList(vector<Token> TokenList);
-
+int isSubstring(string s1, string s2);

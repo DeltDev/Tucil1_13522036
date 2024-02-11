@@ -61,6 +61,7 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
     
     vector<bool> newSequenceCheckList = currentSequenceCheckList;
     pair<int,int> currentCoordinate;
+    int substringCheck;
     if(state == "Horizontal"){
         // cout<<"Masuk State Horizontal"<<"\n";
         for(int i = 0; i<MatrixCol; i++){
@@ -73,23 +74,22 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 
                 newBufferLeft--; //Kurangi BufferLeft dengan 1
                 newBufferCount++; //Tambahkan currentBuffer dengan 1
-                cout<<"Jawaban Sementara: "<<newAnswer<<"\n";
-                cout<<"Daftar Sequence dan check listnya: ";
+                
+                
                 PointAddition = 0;
                 for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
-                    
+                    substringCheck = isSubstring(newAnswer,currentSequenceList[i].GetSequenceString());
                     if(!newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
-                        if(newAnswer.find(currentSequenceList[i].GetSequenceString()) != string::npos){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
-                            PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
+                        if(substringCheck != -1){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
+                            // PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
                             newSequenceCheckList[i] = true; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
                         }
                     }
-                    cout<<currentSequenceList[i].GetSequenceString()<<" "<<newSequenceCheckList[i]<<" ";
                 }
-                cout<<"\n";
-                newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
-                cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
-                cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
+
+                // newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
+                // cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
+                // cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
                 
                 SolveOptimal(gameMatrix,"Vertical",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,currentRow,i,newBufferCount,newSequenceCheckList,currentSequenceList);
@@ -102,7 +102,17 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 newBufferLeft++;//5. Tambah BufferLeft dengan 1
                 newBufferCount--; //6. Kurangi currentBuffer dengan 1
                 //7. Backtrack poin
-                
+
+                for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
+                    substringCheck = isSubstring(newAnswer,currentSequenceList[i].GetSequenceString());
+
+                    if(newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
+                        if(substringCheck == -1){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
+                            // PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
+                            newSequenceCheckList[i] = false; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
+                        }
+                    }
+                }
             }
         }
     } else if(state == "Vertical"){
@@ -117,23 +127,23 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 
                 newBufferLeft--; //Kurangi BufferLeft dengan 1
                 newBufferCount++; //Tambahkan currentBuffer dengan 1
-                cout<<"Jawaban Sementara: "<<newAnswer<<"\n";
-                cout<<"Daftar Sequence dan check listnya: ";
+
                 PointAddition = 0;
                 for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
-                    
+                    substringCheck = isSubstring(newAnswer,currentSequenceList[i].GetSequenceString());
+
                     if(!newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
-                        if(newAnswer.find(currentSequenceList[i].GetSequenceString()) != string::npos){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
-                            PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
+                        if(substringCheck != -1){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
+                            // PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
                             newSequenceCheckList[i] = true; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
                         }
                     }
-                    cout<<currentSequenceList[i].GetSequenceString()<<" "<<newSequenceCheckList[i]<<" ";
                 }
+
                 cout<<"\n";
-                newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
-                cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
-                cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
+                // newPoints = currentPoints + PointAddition; //Tambahkan currentPoints dengan PointAddition
+                // cout<<"Poin yang akan ditambahkan: "<<PointAddition<<"\n";
+                // cout<<"Jumlah poin yang didapatkan dari sequence ini: "<<newPoints<<"\n";
                 UpdateFinalAnswer(newPoints,newBufferCount, newTokenList, newCoordinateList);//Update jawaban
                 
                 SolveOptimal(gameMatrix,"Horizontal",newAnswer,newBufferLeft,newPoints,newTokenList,newCoordinateList,i,currentCol,newBufferCount,newSequenceCheckList,currentSequenceList);
@@ -146,6 +156,22 @@ int currentBuffer, vector<bool> currentSequenceCheckList, vector<TokenSequence> 
                 newBufferLeft++;//5. Tambah BufferLeft dengan 1
                 newBufferCount--; //6. Kurangi currentBuffer dengan 1
                 //7. Backtrack poin
+                cout<<"Ini Backtrack Vertikal"<<"\n";
+                for(int i = 0; i<currentSequenceList.size(); i++){ //1.	Cek semua sequence di SequenceList
+                    substringCheck = isSubstring(newAnswer,currentSequenceList[i].GetSequenceString());
+                    cout<<"Apakah "<<currentSequenceList[i].GetSequenceString()<<"ada di "<<newAnswer<<": "<<substringCheck<<"\n";
+                    if(newSequenceCheckList[i]){ //Jika nilai SequenceCheckList dari Sequence yang diperiksa bernilai false
+                        if(substringCheck == -1){//Jika string dari sequence tersebut adalah substring dari newAnswer, maka
+                            // PointAddition+=currentSequenceList[i].GetSequencePoints(); //Tambahkan PointAddition dengan poin yang dimiliki oleh sequence tersebut
+                            newSequenceCheckList[i] = false; //Tandai SequenceCheckList dari sequence yang diperiksa jadi true
+                        }
+                    }
+                }
+
+                cout<<"Check list Keberadaan sequence di buffer: "<<"\n";
+                for(int i = 0; i<currentSequenceList.size(); i++){
+                    cout<<currentSequenceList[i].GetSequenceString()<<" "<<newSequenceCheckList[i]<<"\n";
+                }
             }
         }
     }
