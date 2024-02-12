@@ -144,6 +144,7 @@ int currentBuffer, vector<TokenSequence> currentSequenceList){
 void OutputFile(GameMatrix gameMatrix,bool method,auto exec_time){
     ofstream OutputFile;
     string OutputFileName = ""; //dummy
+    string OutputPath = "../test/";
     cout<<"Masukkan nama file anda (WAJIB DIAKHIRI DENGAN '.txt'): "<<"\n";
     while(true){
         cin>>OutputFileName;
@@ -153,7 +154,7 @@ void OutputFile(GameMatrix gameMatrix,bool method,auto exec_time){
             cout<<"Format nama salah! Silahkan input nama file output lagi.\n";
         }
     }
-    OutputFile.open(OutputFileName);
+    OutputFile.open(OutputPath+OutputFileName);
     if(method){ //jika metode yang dipilih adalah metode generation acak
         for(int i = 0; i<MatrixRow; i++){ //outputkan matriks ke file
             string RowOut = "";
@@ -203,6 +204,7 @@ void OutputFile(GameMatrix gameMatrix,bool method,auto exec_time){
     OutputFile<<exec_time.count();
     OutputFile<<" ms";
     OutputFile.close();
+    cout<<OutputFileName<<" sudah tersimpan di folder test!\n";
 }
 
 void OutputAnswer(auto exec_time){
@@ -297,10 +299,11 @@ int main(){
         OutputFilePrompt(gameMatrix,method,chrono::duration_cast<MSEC>(end-start));
     } else {
         ifstream InputFile;
-        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan ADA di dalam repository): ";
+        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan WAJIB ADA DI FOLDER test): ";
         string FileName;
+        string InputPath = "../test/";
         cin>>FileName;
-        InputFile.open(FileName);
+        InputFile.open(InputPath + FileName);
 
         while(!InputFile.is_open()){
             cout<<"File tidak ditemukan! Silahkan input ulang.\n";
