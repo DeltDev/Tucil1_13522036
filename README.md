@@ -21,7 +21,7 @@ Program ini memiliki dua fitur utama, yaitu input melalui file.txt dan *randomly
 5. Untuk input file, **PASTIKAN FILE WAJIB BEREKSTENSI .txt dan WAJIB disimpan di folder ```test``` di repositori ini.**
 6. Untuk input manual melalui CLI (Random Generation), ketik semua hal yang diminta oleh program di Terminal/Powershell/Command Prompt.
 7. Ikuti alur input yang diminta oleh program.
-8. Ketik "Y" atau "y" untuk menyimpan output yang dikeluarkan oleh program
+8. Ketik "Y" atau "y" untuk menyimpan output yang dikeluarkan oleh program dalam bentuk file.txt **dan file tersebut akan tersimpan di dalam folder ```test```**
 # Tentang Pembuat Program
 | Nama          | NIM    | Kelas Strategi Algoritma|
 | --------------|--------| ----|
