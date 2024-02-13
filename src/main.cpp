@@ -223,7 +223,7 @@ void OutputAnswer(auto exec_time){
 }
 
 void OutputFilePrompt(GameMatrix gameMatrix, bool choice,auto exec_time){
-    cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' atau 'Y' untuk YA atau ketik selain y untuk tidak) ";
+    cout<<"Apakah ingin menyimpan solusi sebagai file .txt? (Jawab dengan cara ketik HANYA dengan 'y' atau 'Y' untuk YA atau ketik selain kedua input tersebut untuk TIDAK): ";
 
         string answer;
         cin>>answer;
@@ -239,6 +239,10 @@ int main(){
         int validTokensAmount;
         cout<<"Masukkan banyak token yang valid: ";
         cin>>validTokensAmount;
+        while(validTokensAmount<=0){ //handling input token valid
+            cout<<"Banyak token yang valid yang diinput tidak valid! Silahkan input ulang:  ";
+            cin>>validTokensAmount;
+        }
         cout<<"Masukan daftar token yang valid: ";
         string ValidTokensListString;
         cin.ignore();
@@ -246,16 +250,34 @@ int main(){
         vector<string> TokensStringList;
         TokensStringList = StringToStringList(ValidTokensListString);
 
-        for(int i = 0; i<validTokensAmount; i++){
+        for(int i = 0; i<TokensStringList.size(); i++){
             validTokens.insert(TokensStringList[i]);
         }
-
+        while(validTokens.size() != validTokensAmount){  //handling input token
+            cout<<"Banyak token unik yang diinput tidak sesuai dengan banyak token valid! Silahkan input ulang: ";
+            validTokens.clear();
+            cin.ignore();
+            getline(cin,ValidTokensListString); 
+            TokensStringList = StringToStringList(ValidTokensListString);
+            for(int i = 0; i<TokensStringList.size(); i++){
+                validTokens.insert(TokensStringList[i]);
+            }
+        }
         vector<Token> ValidTokensList;
         ValidTokensList = StringListToTokenList(TokensStringList,validTokens);
         cout<<"Masukkan ukuran buffer: ";
         cin>>bufferSize;
+        while(bufferSize<=0){ //handling ukuran buffer
+            cout<<"Ukuran buffer tidak valid! Silahkan input ulang: ";
+            cin>>bufferSize;
+        }
         cout<<"Masukkan banyak baris dan kolom matriks: ";
-        cin>>MatrixRow>>MatrixCol; 
+        cin>>MatrixRow>>MatrixCol;
+
+        while(MatrixCol <=0 || MatrixRow<=0){
+            cout<<"Ukuran matriks tidak valid! Silahkan input ulang: ";
+            cin>>MatrixRow>>MatrixCol;
+        } 
         srand(time(NULL));
         GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
         for(int i = 0; i<MatrixRow; i++){
@@ -267,10 +289,17 @@ int main(){
         
         cout<<"Masukkan banyak sequence: ";
         cin>>sequenceSize;
+        while(sequenceSize<=0){ //handling ukuran buffer
+            cout<<"Banyak sequence tidak valid! Silahkan input ulang: ";
+            cin>>sequenceSize;
+        }
         int MaxSequenceLength;
         cout<<"Masukkan panjang sequence maksimum: ";
         cin>>MaxSequenceLength;
-   
+        while(MaxSequenceLength<=0){ //handling ukuran buffer
+            cout<<"Panjang sequence maksimum tidak valid! Silahkan input ulang: ";
+            cin>>MaxSequenceLength;
+        }
         gameMatrix.PrintTokenMatrix();
         for(int i = 0; i<sequenceSize; i++){
             int SequenceLength = (rand() % MaxSequenceLength) +1;
