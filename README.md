@@ -6,7 +6,7 @@ Program ini memiliki dua fitur utama, yaitu input melalui file.txt dan *randomly
 # Requirements
 1. MinGW-w64 (untuk kompilasi program)
 2. Terminal/Powershell/Command Prompt
-3. Text editor (untuk membuat input baru dan melihat isi output file)
+3. Text editor (Contoh: Notepad untuk membuat input baru dan melihat isi output file)
 
 # Cara Mengompilasi Program
 1. Buka Terminal/Powershell/Command Prompt di folder src repository ini.
@@ -17,12 +17,22 @@ Program ini memiliki dua fitur utama, yaitu input melalui file.txt dan *randomly
 1. Jika Anda melakukan kompilasi program terlebih dahulu, pindahkan file.exe yang sudah dibuat ke folder bin.
 2. Jika Anda menggunakan program yang sudah dibuat di dalam folder bin sebelumnya, lompat ke langkah 3.
 3. Buka Terminal/Powershell/Command Prompt di folder bin
-4. Ketik ```./(nama file.exe yang ada di folder bin di sini)``` di Terminal/Powershell/Command Prompt.
+4. Ketik ```./(nama file.exe yang ada di folder bin di sini)``` di Terminal/Powershell/Command Prompt. Jika Anda melakukan running program dari langkah 2, langsung ketikkan ```./FinalCLIBuild``` di Terminal/Powershell/Command Prompt.
 5. Untuk input file, **PASTIKAN FILE WAJIB BEREKSTENSI .txt dan WAJIB disimpan di folder ```test``` di repositori ini.**
 6. Untuk input manual melalui CLI (Random Generation), ketik semua hal yang diminta oleh program di Terminal/Powershell/Command Prompt.
 7. Ikuti alur input yang diminta oleh program.
-8. Ketik "Y" atau "y" untuk menyimpan output yang dikeluarkan oleh program dalam bentuk file.txt **dan file tersebut akan tersimpan di dalam folder ```test```**
+8. Ketik "Y" atau "y" di dalam Terminal/Powershell/Command Prompt untuk menyimpan output yang dikeluarkan oleh program dalam bentuk file.txt **dan file tersebut akan tersimpan di dalam folder ```test```**. Jika inputnya selain kedua string tersebut, data tidak akan tersimpan di dalam file.txt
 # Tentang Pembuat Program
 | Nama          | NIM    | Kelas Strategi Algoritma|
 | --------------|--------| ----|
 |Akbar Al Fattah|13522036| K-02|
+# Check List Program
+| No | Poin | Ya | Tidak |
+| --- | --- | --- | --- |
+| 1 | Program berhasil dikompilasi tanpa kesalahan | V | |
+| 2 | Program berhasil dijalankan | V | |
+| 3 | Program dapat membaca masukan berkas .txt | V | |
+| 4 | Program dapat menghasilkan masukan seacara acak | V | |
+| 5 | Solusi yang diberikan program optimal | V | |
+| 6 | Program dapat menyimpan solusi dalam berkas .txt | V | |
+| 7 | Program memiliki GUI |  |V |
