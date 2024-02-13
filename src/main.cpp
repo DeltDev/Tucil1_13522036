@@ -327,66 +327,72 @@ int main(){
         OutputAnswer(chrono::duration_cast<MSEC>(end-start));
         OutputFilePrompt(gameMatrix,method,chrono::duration_cast<MSEC>(end-start));
     } else {
-        ifstream InputFile;
-        cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan WAJIB ADA DI FOLDER test): ";
-        string FileName;
-        string InputPath = "../test/";
-        cin>>FileName;
-        InputFile.open(InputPath + FileName);
-
-        while(!InputFile.is_open()){
-            cout<<"File tidak ditemukan! Silahkan input ulang.\n";
-            cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan ADA di dalam repository): ";
+        JumpStart:
+            ifstream InputFile;
+            cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan WAJIB ADA DI FOLDER test): ";
+            string FileName;
+            string InputPath = "../test/";
             cin>>FileName;
-            InputFile.open(FileName);
-        }
+            InputFile.open(InputPath + FileName);
+
+            while(!InputFile.is_open()){
+                cout<<"File tidak ditemukan! Silahkan input ulang.\n";
+                cout<<"Masukkan nama file (WAJIB DIAKHIRI DENGAN '.txt' dan ADA di dalam repository): ";
+                cin>>FileName;
+                InputFile.open(FileName);
+            }
         // if(!InputFile.is_open()){
         //     cout<<"File tidak ditemukan! Program akan berhenti. \n";
         //     return 0;
         // }
-        int linecount = 0;
-        string RowFile;
-        vector<string> RowFileStripped;
-        while(!InputFile.eof()){
-            linecount++;
-            getline(InputFile,RowFile);
-
-            RowFileStripped = StringToStringList(RowFile);
-
-            if(linecount<=2){
-                if(linecount == 1){
-                    bufferSize = stoi(RowFileStripped[0]);
-                }else{
-                    MatrixCol = stoi(RowFileStripped[0]);
-                    MatrixRow =stoi(RowFileStripped[1]);
-                }
-            } else if(linecount>2 && linecount<=MatrixRow+2){
-                
-                inputStringMatrix.push_back(RowFileStripped);
-                for(int i = 0; i<MatrixCol; i++){
-                    validTokens.insert(RowFileStripped[i]);
-                }
-            } else if(linecount == MatrixRow+3){
-                sequenceSize = stoi(RowFileStripped[0]);
-            } else{
-                if(InputFile.eof()){
-                    break;
-                }
-                for(int i = 0; i<RowFileStripped.size(); i++){
-                    validTokens.insert(RowFileStripped[i]);
-                }
-                vector<Token> TokenSeqTemp;
-                TokenSeqTemp = StringListToTokenList(RowFileStripped,validTokens);
-
+            int linecount = 0;
+            string RowFile;
+            vector<string> RowFileStripped;
+            while(!InputFile.eof()){
                 linecount++;
                 getline(InputFile,RowFile);
 
                 RowFileStripped = StringToStringList(RowFile);
-                int tempPoints = stoi(RowFileStripped[0]);
 
-                TokenSequence TempSequence = TokenSequence(TokenSeqTemp,tempPoints);
-                SequenceList.push_back(TempSequence);
+                if(linecount<=2){
+                    if(linecount == 1){
+                        bufferSize = stoi(RowFileStripped[0]);
+                    }else{
+                        MatrixCol = stoi(RowFileStripped[0]);
+                        MatrixRow =stoi(RowFileStripped[1]);
+                    }
+                } else if(linecount>2 && linecount<=MatrixRow+2){
+                
+                    inputStringMatrix.push_back(RowFileStripped);
+                    for(int i = 0; i<MatrixCol; i++){
+                        validTokens.insert(RowFileStripped[i]);
+                    }
+                } else if(linecount == MatrixRow+3){
+                    sequenceSize = stoi(RowFileStripped[0]);
+                } else{
+                    if(InputFile.eof()){
+                        break;
+                    }
+                    for(int i = 0; i<RowFileStripped.size(); i++){
+                        validTokens.insert(RowFileStripped[i]);
+                    }
+                    vector<Token> TokenSeqTemp;
+                    TokenSeqTemp = StringListToTokenList(RowFileStripped,validTokens);
+
+                    linecount++;
+                    getline(InputFile,RowFile);
+
+                    RowFileStripped = StringToStringList(RowFile);
+                    int tempPoints = stoi(RowFileStripped[0]);
+
+                    TokenSequence TempSequence = TokenSequence(TokenSeqTemp,tempPoints);
+                    SequenceList.push_back(TempSequence);
+                }
             }
+        if(bufferSize<=0 || MatrixCol<=0 || MatrixRow<=0 || sequenceSize<=0 || MatrixCol != inputStringMatrix[0].size() || MatrixRow != inputStringMatrix.size() || sequenceSize != SequenceList.size()){//handling input file
+            cout<<"Isi file tidak valid. Silahkan input ulang. \n";
+            goto JumpStart;
+            return 0;
         }
         GameMatrix gameMatrix = GameMatrix(MatrixRow,MatrixCol,validTokens);
         gameMatrix.InputGameMatrix(inputStringMatrix,validTokens);
